@@ -13,6 +13,8 @@ import { routing, appRoutingProviders } from './router';
 import { CrearAspirantesComponent } from './components/crear-aspirantes/crear-aspirantes.component';
 import { MainComponent } from './components/main/main.component';
 import { GruposComponent } from './components/grupos/grupos.component';
+import { ExplorarCodigosComponent } from './components/explorar-codigos/explorar-codigos.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 @NgModule({
@@ -23,14 +25,16 @@ import { GruposComponent } from './components/grupos/grupos.component';
     HomeComponent,
     CrearAspirantesComponent,
     MainComponent,
-    GruposComponent
+    GruposComponent,
+    ExplorarCodigosComponent
    
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AngularFileUploaderModule,
-    routing
+    routing,
+    NgxChartsModule
   
     
   ],

@@ -7,7 +7,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { CrearAspirantesComponent } from "./components/crear-aspirantes/crear-aspirantes.component";
 import { MainComponent } from "./components/main/main.component";
 import { GruposComponent } from "./components/grupos/grupos.component";
-
+import { ExplorarCodigosComponent } from "./components/explorar-codigos/explorar-codigos.component";
 
 const AppRoutes: Routes = [
 
@@ -18,7 +18,8 @@ const AppRoutes: Routes = [
     { path: 'panel', component: MainComponent, children: [
         { path: 'nuevo-aspirante/:id', component: CrearAspirantesComponent },
         { path: 'nuevo-grupo', component: GruposComponent }
-    ]}
+    ]},
+    { path: 'explorar-codigos', component: ExplorarCodigosComponent },
    
 ];
 

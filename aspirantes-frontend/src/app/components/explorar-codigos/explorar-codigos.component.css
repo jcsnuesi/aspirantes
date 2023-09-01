@@ -1,0 +1,36 @@
+.tablaAspirantes{
+
+    margin-top: 30px;
+}
+
+h1{
+    margin-bottom: 12px;
+}
+
+a{
+    cursor: pointer;
+}
+
+.principal{
+    display: flex;
+}
+
+.modalTh, th, td{
+
+    margin-left: 15px;
+    text-align: center;
+}
+
+.tablaModal{
+
+    margin-right: 40px;
+
+}
+
+.contenido{
+    display: block;
+}
+.evaluaciones{
+    display: block;
+}
+

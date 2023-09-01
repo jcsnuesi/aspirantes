@@ -199,8 +199,6 @@ export class CrearAspirantesComponent implements OnInit{
       this._userServices.crearAspirante(formData, this.token).subscribe(
         res => { 
 
-          console.log(res)
-
           if (res.status == 'success') {
 
             this.status = 'success';
@@ -210,8 +208,6 @@ export class CrearAspirantesComponent implements OnInit{
               window.location.reload()
             }, 3000);
            
-
-            
           }else{
 
             this.status = 'error'

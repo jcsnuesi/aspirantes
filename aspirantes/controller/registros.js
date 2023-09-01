@@ -299,15 +299,8 @@ var RegistrosController = {
 
         var params = req.params.id
 
-        if (req.user.role != 'root') {
-
-            return res.status(403).send({
-                status: 'forbidden',
-                message: 'No estas autorizado para esta accion.'
-            })
-
-        }
-
+       
+        
         Aspirantes.findOneAndDelete({ _id: params }, (err, deleted) => {
 
             if (err) {
@@ -319,6 +312,13 @@ var RegistrosController = {
 
             }
 
+            Grupos.findOneAndDelete({
+                aspirantesId: params
+            },(err,grupoDel)=>{
+                console.log(grupoDel)
+            })
+           
+
             return res.status(200).send({
                 status: 'success',
                 usuario_eliminado: deleted
@@ -326,53 +326,56 @@ var RegistrosController = {
 
  
         })
-    },
-    subirAvatarAspirante: function (req, res) {
+    }
+    // },
+    // subirAvatarAspirante: function (req, res) {
 
-        var avatarPath = req.files.avatar.path
+    //     var avatarPath = req.files.avatar.path
 
-        var params = req.body
+    //     var params = req.body
 
-        var namesplit = avatarPath.split(/[\\.]+/g)
+    //     var namesplit = avatarPath.split(/[\\.]+/g)
 
-        let extension = ['jpg', 'jpeg', 'gif', 'png']
+    //     let extension = ['jpg', 'jpeg', 'gif', 'png']
 
-        if (!extension.includes(namesplit[3].toLowerCase())) {
+    //     if (!extension.includes(namesplit[3].toLowerCase())) {
 
-            fs.unlink(avatarPath, (err) => {
+    //         fs.unlink(avatarPath, (err) => {
 
-                return res.status(403).send({
-                    status: 'Failed',
-                    message: `Solo se aceptan los siguentes formatos: ${extension}`
-                })
-            })
+    //             return res.status(403).send({
+    //                 status: 'Failed',
+    //                 message: `Solo se aceptan los siguentes formatos: ${extension}`
+    //             })
+    //         })
 
-        }
+    //     }
 
-        var file_name = namesplit[2] + '.' + namesplit[3].toLowerCase()
+    //     var file_name = namesplit[2] + '.' + namesplit[3].toLowerCase()
 
-        Aspirantes.findOneAndUpdate({ _id: params.id }, { avatar: file_name }, { new: true }, (err, userUpdated) => {
+    //     Aspirantes.findOneAndUpdate({ _id: params.id }, { avatar: file_name }, { new: true }, (err, userUpdated) => {
 
-            if (err || !userUpdated) {
+    //         if (err || !userUpdated) {
 
-                return res.status(500).send({
-                    status: 'error',
-                    mesage: 'Error al subir la imagen'
+    //             return res.status(500).send({
+    //                 status: 'error',
+    //                 mesage: 'Error al subir la imagen'
 
-                });
+    //             });
 
-            }
+    //         }
 
-            //Devolver respuesta
-            return res.status(200).send({
-                status: 'success',
-                user: userUpdated
+    //         //Devolver respuesta
+    //         return res.status(200).send({
+    //             status: 'success',
+    //             user: userUpdated
 
-            });
+    //         });
 
-        })
+    //     })
 
-    }, avatar: function (req, res) {
+    // }
+    , 
+    avatar: function (req, res) {
 
         let filename = req.params.filename
         let pathFile = 'assets/aspirantes/' + filename

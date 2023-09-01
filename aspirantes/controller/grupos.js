@@ -1,8 +1,10 @@
 var Grupos = require('../model/grupos')
 var validator = require('validator')
 let _errors = require('../error/exceptions')
+const path = require('path')
+const fs = require('fs')
 
-var GruposController = {
+var CodigoController = {
     crearGrupo: function (req, res) {
 
         var params = req.body
@@ -138,7 +140,7 @@ var GruposController = {
 
         if (val_codigo) {
 
-            Grupos.findOne({ _id: params })
+            Grupos.findOne({ codigo: params })
                 .populate('aspirantesId', 'nombres avatar nombres apellidos sexo cedula fecha_nacimiento edad estatura celular correo recomendacion observacion psic cg psict prom medicos fisico codigo estatus').exec((err, group) => {
 
                 if (err) {
@@ -274,7 +276,26 @@ var GruposController = {
 
 
         })
+    }, avatarCodigo: function (req, res) {
+
+        let filename = req.params.filename
+        let pathFile = 'assets/aspirantes/' + filename
+
+
+        fs.stat(pathFile, (err, stat) => {
+
+            if (stat) {
+                return res.sendFile(path.resolve(pathFile))
+            } else {
+                return res.status(404).send({
+                    message: "Imagen no existe."
+                })
+            }
+
+        })
+
+
     }
 }
 
-module.exports = GruposController;
+module.exports = CodigoController;

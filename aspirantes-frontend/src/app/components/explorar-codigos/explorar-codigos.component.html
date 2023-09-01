@@ -1,0 +1,163 @@
+<div class="col-lg-4 mt-5">
+
+<label for="codigos" class="form-label">Codigos</label>
+
+<select (change)="buscarCodigo($event)" name="codigos" #codigos="ngModel" aria-label="Default select example"  [(ngModel)]="codigo" id="codigos" class="form-select" required
+>
+    <option disabled selected>Seleccionar codigo...</option>
+    <option *ngFor="let cod of codigosDisponibles" value="{{cod.codigo}}">{{cod.codigo}}</option>
+    
+</select>
+</div>
+<div class="tablaAspirantes">
+
+ 
+<h1>Tabla aspirantes</h1>
+
+<table class="table table-striped mt-5 table-bordered" >
+    <tr>
+        <th scope="col" style="font-size: 22px;padding: 8px;">Codigo</th>
+        <th style="font-size: 22px;padding: 8px;">Foto</th>
+        <th style="font-size: 22px;padding: 8px;">Nombres</th>
+        <th style="font-size: 22px;padding: 8px;">Apellidos</th>
+        <th style="font-size: 22px;padding: 8px;">Fecha de nacimiento</th>
+        <th style="font-size: 22px;padding: 8px;">Edad</th>
+        <th style="font-size: 22px;padding: 8px;">Recomendacion</th>
+        
+
+    </tr>
+    <tbody>
+      
+        <tr *ngFor="let aspiranteData of aspirantesGrupo; let i = index">
+            <th scope="row">{{i+1}}</th>
+           
+            <td>
+                <a data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="aspirante(i)" style="width: 228px;">
+                    <img  style="width: 228px;height: 244px;" src="{{this.url +'avatarCodigo/'+ aspiranteData.avatar}}" alt=""> 
+                    </a>
+                
+                </td>
+            
+          
+           
+            <td style="font-size: 22px;">{{aspiranteData.nombres}}</td>
+            <td style="font-size: 22px;">{{aspiranteData.apellidos}}</td>
+            <td style="font-size: 22px;">{{aspiranteData.fecha_nacimiento
+}}</td>
+            <td style="font-size: 22px;">{{aspiranteData.edad
+}}</td>
+            <td style="font-size: 22px;">{{aspiranteData.recomendacion}}</td>
+           
+        </tr>
+    </tbody>
+</table> 
+
+
+
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngIf="modal == 'modal'">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Perfil del aspirante</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               
+                <div class="principal">
+
+
+                    <div class="foto tablaModal mt-5">
+                        <img  style="width: 450px;height: 500px;" src="{{this.url +'avatarCodigo/'+modalInfo.avatar}}" alt="">
+                    </div>
+
+                    <div class="contenido">
+    
+                        <label class="input-group-text" style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 24px;">Datos personales</label>
+                        <div class="centrar">
+
+                        <table class="table">
+                            <tr>
+                              
+                            <th style="font-size: 22px; margin-left: 20px;">Nombres</th>
+                            <th style="font-size: 22px;margin-left: 20px;">Apellidos</th>
+                            <th style="font-size: 22px;margin-left: 20px;">Fecha de nacimiento</th>
+                            <th style="font-size: 22px;margin-left: 20px;">Edad</th>
+                            <th style="font-size: 22px;margin-left: 20px;">Cedula</th>
+                            </tr>
+                            <tbody>
+                                <tr>
+                                  <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.nombres}}</td>
+                                  <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.apellidos}}</td>
+                                  <td style="font-size: 22px;margin-left: 20px;">{{fechanacimiento}}</td>
+                                  <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.edad}}</td>
+                                  <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.cedula}}</td>
+                                    
+                                  
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                    </div>
+
+                    <div class="evaluaciones">
+
+                        <label class="input-group-text"
+                            style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 24px;">Evaluaciones</label>
+
+                            <div style="display: flex;justify-content: center;">
+                            
+                                <ngx-charts-bar-vertical-2d [view]="view" [scheme]="colorScheme" [results]="multi" [gradient]="gradient"
+                                    [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                                    [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                    [legendTitle]="legendTitle">
+                            
+                                </ngx-charts-bar-vertical-2d>
+                            </div>
+                          
+                            <div class="observaciones">
+                                <label class="input-group-text"
+                                    style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 24px;">Evaluaciones</label>
+
+                                        <table class="table">
+                                            <tr>
+                                        
+                                                <th style="font-size: 22px; margin-left: 20px;">Recomendacion</th>
+                                                <th style="font-size: 22px;margin-left: 20px;">Observacion</th>
+                                                <th style="font-size: 22px;margin-left: 20px;">medicos</th>
+                                                <th style="font-size: 22px;margin-left: 20px;">Psicologica</th>
+                                            
+                                            </tr>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.recomendacion}}</td>
+                                                    <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.observacion}}</td>
+                                                    <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.medicos}}</td>
+                                                    <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.psic}}</td>
+                                               
+                                                    
+                                        
+                                        
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                            </div>
+                    </div>
+                </div>
+
+               
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" (click)="aspirante(posicion-1)" class="btn btn-dark">Anterior</button>
+                <button type="button" (click)="aspirante(posicion+1)" class="btn btn-primary">Siguiente</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Full screen modal -->
+ <div class="modal-dialog modal-fullscreen-sm-down">
+    ...
+</div>
+
+</div>

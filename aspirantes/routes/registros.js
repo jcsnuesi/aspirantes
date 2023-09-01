@@ -20,7 +20,7 @@ router.get('/foto/:filename', RegistrosController.avatar);
 // RUTAS PUT
 
 router.put('/actualizar-aspirante', md_auth.autenticacion, RegistrosController.actualizarAspirante)
-router.put('/actualizar-avatar', [md_auth.autenticacion, uploadDir], RegistrosController.subirAvatarAspirante)
+// router.put('/actualizar-avatar', [md_auth.autenticacion, uploadDir], RegistrosController.subirAvatarAspirante)
 
 // RUTAS DELETE
 

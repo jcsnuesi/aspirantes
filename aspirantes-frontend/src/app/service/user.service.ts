@@ -64,6 +64,16 @@ export class UserService{
 
        return this._http.get(this.url + 'grupo-total-aspirantes/'+id, {headers:header})
    }
+   
+
+
+    grupoCodigoById(id: string, token: string): Observable<any> {
+
+        var header = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', token)
+
+        return this._http.get(this.url + 'gruposId/' + id, { headers: header })
+    }
+
 
    crearCodigo(codigo:string, token:string):Observable<any>{
 
