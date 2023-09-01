@@ -1,0 +1,68 @@
+<div class="container">
+
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" [routerLink]="['/home']">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"[routerLink]="['/panel']">Panel</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu ">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+       
+      </ul>
+
+      <ul class="navbar-nav navbar-right">
+      
+        <li class="nav-item setting nav-letter" *ngIf="identity == false" >
+          <a class="nav-link pointer nav-letter" [routerLink]="['/registro']">Register</a>
+        </li>
+        <li class="nav-item pointer setting nav-letter" *ngIf="identity == false" >
+          <a class="nav-link nav-letter" [routerLink]="['/login']"> 
+            Login
+          </a>
+        </li>
+
+        <li class="nav-item dropdown" *ngIf="identity != false">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{identity.user.nombres + " " + identity.user.apellidos}}
+            <img class="avatar" src="{{url + 'avatar/' + identity.user.avatar}}" alt="" srcset="">
+          </a>
+          <ul class="dropdown-menu">
+           <li><a class="dropdown-item" href="#">Perfil</a></li>
+            <!-- <li><a class="dropdown-item" href="#"></a></li> -->
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" (click)="sessionDestroy()">Cerrar sesion</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <router-outlet></router-outlet>
+
+</div>
+

@@ -1,0 +1,90 @@
+
+
+<div *ngIf="status == 'success'" class="alert alert-success mt-3" role="alert">
+   Grupo creado exitosamente!
+</div>
+<div class="alert alert-danger mt-3" *ngIf="status == 'error'" role="alert">
+    {{mgs}}
+</div>
+
+<div class=" mt-3 "  style="width: 30%;" >
+    <h3>Nuevo codigo</h3>
+    <hr>
+    
+    
+    <form #grupoForm="ngForm" (ngSubmit)="onSubmit(grupoForm)">
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Codigo:</span>
+            <input type="text" class="form-control" #codigo="ngModel" [(ngModel)]="codigox" name="codigo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+        </div>
+    
+        <input type="submit" class="btn btn-success" value="Crear grupo" [disabled]="!grupoForm.valid">
+    
+    
+    
+    </form>
+
+   
+    <div class="mt-4">
+    
+        <h3>Codigos existentes</h3>
+        <hr>
+    
+        <div class="d-flex">
+
+            <div class="femaleTable">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Femenino</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let codigosF of female; let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>
+                                <a [routerLink]="['/panel/nuevo-aspirante/',female[i].codigo]">{{ codigosF.codigo}}</a> </td>
+                            <td>{{ codigosF.total}}</td>
+    
+                        </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="maleTable ms-5">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Masculino</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let codigosM of male; let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td><a [routerLink]="['/panel/nuevo-aspirante/',male[i].codigo]">{{ codigosM.codigo}}</a></td>
+                            <td>{{ codigosM.total}}</td>
+                
+                        </tr>
+                
+                    </tbody>
+                </table>
+            
+
+            </div>
+        </div>
+      
+    
+    </div>
+  
+</div>
+
+

@@ -1,0 +1,52 @@
+<div class="col-lg-12 mt-3">
+
+    <h1>
+        {{titulo}}
+
+    </h1>
+    <hr>
+
+    <div *ngIf="status == 'success'" class="alert alert-success" role="alert">
+        {{message}}
+        <a [routerLink]="['/login']">
+            Ir a login
+        </a>
+    </div>
+    <div *ngIf="status == 'error'" class="alert alert-danger" role="alert">
+        {{message}}
+    </div>
+
+    <form #loginForm="ngForm" class="col-md-5 ml-0 pl-0" (ngSubmit)="onSubmit(loginForm)">
+       
+        
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo</label>
+            <input type="email" class="form-control" #correo="ngModel" name="correo" [(ngModel)]="user.correo"
+                id="correo" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+
+            <span *ngIf="!correo.valid && correo.touched" class="invalid-feedback d-block">
+                El correo debe ser completado.
+            </span>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="password" #password="ngModel" [(ngModel)]="user.password"
+                id="password" required>
+
+            <span *ngIf="!password.valid && password.touched" class="invalid-feedback d-block">
+                La contraseña debe ser completado.
+            </span>
+
+        </div>
+
+
+        <input type="submit" class="btn btn-success" value="Iniciar" [disabled]="loginForm.invalid">
+
+
+
+
+
+    </form>
+
+</div>
+

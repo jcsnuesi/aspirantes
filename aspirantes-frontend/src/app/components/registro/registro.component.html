@@ -1,0 +1,98 @@
+
+
+<div class="col-lg-12 mt-3">
+
+    <h1>
+        {{titulo}}
+    
+    </h1>
+    <hr>
+
+    <div *ngIf="status == 'success'" class="alert alert-success" role="alert">
+       {{message}} 
+       <a [routerLink]="['/login']">
+        Ir a login
+       </a>
+    </div>
+    <div *ngIf="status == 'error'" class="alert alert-danger" role="alert">
+        {{message}}
+    </div>
+
+    <form #regirtroForm="ngForm" class="col-md-5 ml-0 pl-0" (ngSubmit)="onSubmit(regirtroForm)">
+
+    <div class="mb-3">
+
+        <label for="userRole" class="form-label" >Role</label>
+        
+        <select name="userRole" #userRole="ngModel" [(ngModel)]="user.role" id="userRole" class="form-control" required>
+            <option value="#" disabled selected>Seleccionar Role</option>
+            <option value="staff">Staff</option>
+            <option value="admin">Administrador</option>
+        </select>
+
+    </div>
+    <div class="mb-3">
+        <label for="nombres" class="form-label">Nombres</label>
+        <input type="text" class="form-control" id="nombres" #nombres="ngModel" [(ngModel)]="user.nombres" name="nombres"  aria-describedby="nombres" required pattern="[a-zA-Z ]+" />
+
+        <span *ngIf="!nombres.valid && nombres.touched" class="invalid-feedback d-block">
+            Los nombres debe ser completado.
+        </span>
+    
+    </div>
+    <div class="mb-3">
+        <label for="apellidos" class="form-label">Apellidos</label>
+        <input type="text" class="form-control" name="apellidos" id="apellidos" #apellidos="ngModel" [(ngModel)]="user.apellidos"
+            aria-describedby="apellidos" required pattern="[a-zA-Z ]+">
+
+        <span *ngIf="!apellidos.valid && apellidos.touched" class="invalid-feedback d-block">
+            Los apelllidos debe ser completado.
+        </span>
+    
+    </div>
+    <div class="mb-3">
+        <label for="correo" class="form-label">Correo</label>
+        <input type="email" class="form-control" #correo="ngModel" name="correo" [(ngModel)]="user.correo" id="correo" required>
+
+        <span *ngIf="!correo.valid && correo.touched" class="invalid-feedback d-block">
+           El correo debe ser completado.
+        </span>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" name="password" #password="ngModel" [(ngModel)]="user.password" id="password" required>
+
+        <span *ngIf="!password.valid && password.touched" class="invalid-feedback d-block">
+           La contraseña debe ser completado.
+        </span>
+    </div>
+    
+    
+    <input type="submit" class="btn btn-success" value="Crear usuario" [disabled]="regirtroForm.invalid">
+    
+
+
+
+
+    </form>
+
+</div>
+
+<!-- 
+<form #regirtroUsuarios="ngForm" (ngSubmit)="onSubmit(regirtroUsuarios)">
+
+    <div class="mb-3">
+        <label for="userRole" class="form-label" #roles [(ngModel)]="roles">Role</label>
+       <select name="roles" id="" class="form-control">
+        <option value="">Seleccionar Role</option>
+        <option value="staff">Staff</option>
+        <option value="admin">Administrador</option>
+       </select>
+        
+    </div>
+    
+
+
+
+</form> -->
+

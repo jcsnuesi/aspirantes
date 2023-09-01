@@ -1,0 +1,415 @@
+
+<div class="mt-3">
+
+    <h1>{{titulo}}</h1>
+
+    <hr>
+
+    <form #aspiranteForm="ngForm" (ngSubmit)="onSubmit(aspiranteForm)">
+
+        <div class="form-group" >
+        
+            <label class="input-group-text" style="padding: 12px;margin: 12px auto;">Foto aspirante</label>
+            
+           
+            <div *ngIf="status == 'success'" class="alert alert-success" role="alert">
+                Aspirante creado exitosamente!
+            </div>
+            <div class="alert alert-danger" *ngIf="status == 'error'" role="alert">
+                Hubo un error al crear el registro, revise todos los campos e intente nuevamente
+            </div>
+            
+
+            <span class="nopic">
+                <img src="{{foto}}" class="card-img-top"style="padding: 10px;width: 350px;height: 320px;" alt="...">
+            </span>
+            
+            <input type="file"  name="avatar"  (change)="onFileSelected($event)" #avatar="ngModel" [(ngModel)]="aspirante.avatar" id="imgAspirantes">
+       
+      
+        
+        </div>
+
+        <input type="text" class="form-control" style="width: 10%;margin-right: 5px;margin-bottom: 14px;" name="codigo" #codigo="ngModel" [(ngModel)]="aspirante.codigo" hidden  />
+       
+        <label class="input-group-text" style="width: 160px;margin-right: 5px;margin-bottom: 14px;font-weight: bold;font-size:18px;">Codigo: {{this.aspirante.codigo}}
+        </label>
+
+        <label class="input-group-text" style="padding: 12px;margin: 12px auto;">Datos personales</label>
+    <div class="centrar"  >
+
+       
+        <div class="interior">
+            <div class="hijos">
+                <label for="nombres" class="form-label">Nombres</label>
+                <input type="text" class="form-control" id="nombres" #nombres="ngModel" [(ngModel)]="aspirante.nombres"
+                    name="nombres" aria-describedby="nombres" required pattern="[a-zA-Z ]+" />
+        
+                <span *ngIf="!nombres.valid && nombres.touched" class="invalid-feedback d-block">
+                    Los nombres debe ser completado.
+                </span>
+        
+        
+        
+            </div>
+        
+            <div class="hijos">
+                <label for="apellidos" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="apellidos" #apellidos="ngModel" [(ngModel)]="aspirante.apellidos"
+                    name="apellidos" aria-describedby="apellidos" required pattern="[a-zA-Z ]+" />
+        
+                <span *ngIf="!apellidos.valid && apellidos.touched" class="invalid-feedback d-block">
+                    Los apellidos debe ser completado.
+                </span>
+            </div>
+
+                <div class="hijos">
+                
+                    <label for="sexo" class="form-label">Genero</label>
+                    <input type="text" class="form-control" name="sexo" #sexo="ngModel" [(ngModel)]="aspirante.sexo" disabled required>
+                
+                   
+                    
+                </div>
+        
+        </div>
+        
+       
+    </div>
+
+        <!-- BLOQUE 1-->
+    <div class="centrar">
+    
+        <div class="interior">
+            <div class="hijos">
+                <label for="cedula" class="form-label">Cedula</label>
+                <input type="text" class="form-control" id="cedula" #cedula="ngModel" [(ngModel)]="aspirante.cedula"
+                    name="cedula" aria-describedby="cedula" required/>
+    
+                <span *ngIf="!cedula.valid && cedula.touched" class="invalid-feedback d-block">
+                    Los nombres debe ser completado.
+                </span>
+    
+    
+            </div>
+    
+            <div class="hijos">
+                <label for="fecha_nacimiento" class="form-label">Fecha nacimiento</label>
+
+                <input type="date" (change)="fillAge($event)" class="form-control" id="fecha_nacimiento" #fecha_nacimiento="ngModel" [(ngModel)]="aspirante.fecha_nacimiento"
+                    name="fecha_nacimiento" aria-describedby="fecha_nacimiento" required  />
+    
+                <span *ngIf="!fecha_nacimiento.valid && fecha_nacimiento.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+            </div>
+    
+            <div class="hijos">
+    
+                <label for="edad" class="form-label">Edad</label>
+            <input type="text" class="form-control" id="edad" #edad="ngModel"
+                [(ngModel)]="aspirante.edad" name="edad" aria-describedby="edad" required disabled
+               />
+
+                <span *ngIf="!edad.valid && edad.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+                    
+            </div>
+    
+        </div>
+
+    
+    </div>
+       
+    <!-- BLOQUE 2-->
+    <div class="centrar">
+    
+        <div class="interior">
+          
+    
+            <div class="hijos">
+                <label for="celular" class="form-label">Celular</label>
+                <input type="text" class="form-control" id="celular" #celular="ngModel" [(ngModel)]="aspirante.celular"
+                    name="celular" aria-describedby="celular" required />
+    
+                <span *ngIf="!celular.valid && celular.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+            </div>
+    
+            <div class="hijos">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="text" class="form-control" id="correo" #correo="ngModel" [(ngModel)]="aspirante.correo"
+                    name="correo" aria-describedby="edad" required />
+            
+                <span *ngIf="!correo.valid && correo.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+            </div>
+    
+        </div>
+    
+    
+    </div>
+
+    <label class="input-group-text" style="padding: 12px;margin: 12px auto;">Descripcion fisica</label>
+
+    <div class="centrar">
+
+        <div class="interior">
+
+            <div class="hijos">
+                <label for="estatura" class="form-label">Estatura</label>
+                <input type="text" class="form-control" id="estatura" #estatura="ngModel" [(ngModel)]="aspirante.estatura"
+                    name="estatura" aria-describedby="estatura" required />
+            
+                <span *ngIf="!estatura.valid && estatura.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+            
+            
+            </div>
+
+            <div class="hijos">
+
+                <label for="peso" class="form-label">Peso (Libras)</label>
+                <input type="text" class="form-control" id="peso" #peso="ngModel" [(ngModel)]="aspirante.peso" name="peso"
+                    aria-describedby="peso" required />
+                
+                <span *ngIf="!peso.valid && peso.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+
+            </div>
+                <div class="hijos">
+
+                    <label for="colorpiel" class="form-label">Color piel</label>
+                    <select class="form-select" aria-label="Default select example" name="colorpiel"  #colorpiel="ngModel" [(ngModel)]="aspirante.colorpiel" > 
+                        <option selected disabled>Seleccionar Piel....</option>
+                        <option value="clara">Clara</option>
+                        <option value="mestiza">Mestiza</option>
+                        <option value="mulata">Mulata</option>
+                        <option value="negra">Negra</option>
+                        <option value="cobriza">Cobriza</option>
+                        <option value="blanca">Blanca</option>
+                    </select>
+                
+                   
+                
+                    <span *ngIf="!colorpiel.valid && colorpiel.touched" class="invalid-feedback d-block">
+                        Campo requerido.
+                    </span>
+                
+                </div>
+                
+        </div>
+    </div>
+
+       <div class="centrar">
+    
+        <div class="interior">
+
+                <div class="hijos">
+                
+                    <label for="colorpelo" class="form-label">Color pelo</label>
+                    <select class="form-select" aria-label="Default select example" name="colorpelo" #colorpelo="ngModel"
+                        [(ngModel)]="aspirante.colorpelo">
+                        <option selected disabled>Seleccionar color Pelo....</option>
+                        <option value="negro">Negro</option>
+                        <option value="castano">Castaño oscuro</option>
+                        <option value="castanoclaro">Castaño claro</option>
+                        <option value="rubio">Rubio</option>
+                        <option value="pelirrojo">Pelirojo</option>
+                        <option value="marron">Marron</option>
+                        <option value="canoso">canoso</option>
+                    </select>
+                
+                
+                
+                    <span *ngIf="!colorpelo.valid && colorpelo.touched" class="invalid-feedback d-block">
+                        Campo requerido.
+                    </span>
+                
+                </div>
+            <div class="hijos">
+    
+                <label for="constitucionFisica" class="form-label">Constitucion Fisica</label>
+
+                <select class="form-select" aria-label="Default select example" name="constitucionFisica" #constitucionFisica="ngModel"
+                    [(ngModel)]="aspirante.constitucionFisica">
+                    <option selected disabled>Seleccionar fisico....</option>
+                    <option value="debil">Débil</option>
+                    <option value="mediano">Mediano</option>
+                    <option value="fuerte">Fuerte</option>
+                    <option value="obeso">Obeso</option>
+                </select>
+    
+                <span *ngIf="!constitucionFisica.valid && constitucionFisica.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+    
+            </div>
+
+            <div class="hijos">
+    
+                <label for="colorojos" class="form-label">Color ojos</label>
+                <select class="form-select" aria-label="Default select example" name="colorojos" #colorojos="ngModel"
+                    [(ngModel)]="aspirante.colorojos">
+                    <option selected disabled>Seleccionar color ojos....</option>
+                    <option value="marron">Marrones</option>
+                    <option value="verdes">Verdes</option>
+                    <option value="azules">Azules</option>
+                    <option value="neros">Negros</option>
+                    <option value="grises">Grises</option>
+                    <option value="ambar">Ambar</option>
+                </select>
+    
+    
+    
+                <span *ngIf="!colorojos.valid && colorojos.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+    
+            </div>
+          
+            
+        </div>
+    </div>
+       
+    <label class="input-group-text" style="padding: 12px;margin: 12px;">Evaluaciones</label>
+    <!-- BLOQUE 3-->
+    <div class="centrar">
+    
+        <div class="interior">
+        <div class="hijos">
+            <label for="recomendacion" class="form-label">Recomendacion</label>
+            <input type="text" class="form-control" id="recomendacion" #recomendacion="ngModel" [(ngModel)]="aspirante.recomendacion"
+                name="recomendacion" aria-describedby="recomendacion" required />
+        
+            <span *ngIf="!recomendacion.valid && recomendacion.touched" class="invalid-feedback d-block">
+                Campo requerido.
+            </span>
+        </div>
+
+        <div class="hijos">
+            <label for="observacion" class="form-label">Observacion</label>
+            <input type="text" class="form-control" id="observacion" #observacion="ngModel" [(ngModel)]="aspirante.observacion" name="observacion"
+                aria-describedby="observacion" required />
+        
+            <span *ngIf="!observacion.valid && observacion.touched" class="invalid-feedback d-block">
+                Campo requerido.
+            </span>
+        </div>
+    
+            <div class="hijos">
+            
+                <label for="psic" class="form-label">PSIC</label>
+            
+                <select name="psic" #psic="ngModel" [(ngModel)]="aspirante.psic" id="psic" class="form-control"
+                    required>
+                    <option value="#" disabled selected>Seleccionar...</option>
+                    <option value="apto">Apto</option>
+                    <option value="no_apto">No apto</option>
+                </select>
+            
+            </div>
+    
+  
+    
+        </div>
+    
+    
+    </div>
+
+    <!-- BLOQUE 4-->
+    <div class="centrar">
+    
+        <div class="interior">
+
+                <div class="hijos">
+                    <label for="cg" class="form-label">CG</label>
+                    <input type="text" class="form-control" id="cg" #cg="ngModel" [(ngModel)]="aspirante.cg" name="cg"
+                        aria-describedby="cg" required />
+                
+                    <span *ngIf="!cg.valid && cg.touched" class="invalid-feedback d-block">
+                        Campo requerido.
+                    </span>
+                </div>
+
+            <div class="hijos">
+                <label for="psict" class="form-label">PSICT</label>
+                <input type="text" class="form-control" id="psict" #psict="ngModel" [(ngModel)]="aspirante.psict" name="psict"
+                    aria-describedby="cg" required />
+            
+                <span *ngIf="!psict.valid && psict.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+            </div>
+    
+            <div class="hijos">
+            
+                <label for="medicos" class="form-label">Medicos</label>
+            
+                <select name="medicos" #medicos="ngModel" [(ngModel)]="aspirante.medicos" id="medicos" class="form-control"
+                    required>
+                    <option value="#" disabled selected>Seleccionar...</option>
+                    <option value="apto">Apto</option>
+                    <option value="no_apto">No apto</option>
+                </select>
+            
+            </div>
+    
+        </div>
+    
+    
+    </div>
+
+    <!-- BLOQUE 5-->
+    <div class="centrar">
+    
+        <div class="interior">
+            <div class="hijos">
+
+                <label for="fisico" class="form-label">Fisico</label>
+                <input type="text" class="form-control" id="fisico" #fisico="ngModel" [(ngModel)]="aspirante.fisico" name="fisico"
+                    aria-describedby="fisico" />
+            
+                <span *ngIf="!fisico.valid && fisico.touched" class="invalid-feedback d-block">
+                    Campo requerido.
+                </span>
+            </div>
+    
+            
+            
+    
+        <div class="hijos" >
+        
+            <label for="estatus" class="form-label">Estatus</label>
+        
+            <select name="estatus" #estatus="ngModel" [(ngModel)]="aspirante.estatus" id="estatus" class="form-control"
+                required>
+                <option value="#" disabled selected>Seleccionar...</option>
+                <option value="aprobado">Aprobado</option>
+                <option value="reprobado">Reprobado</option>
+            </select>
+        
+        </div>
+    
+        </div>
+    
+    
+    </div>
+    
+    <div *ngIf="status == 'success'" class="alert alert-success" role="alert">
+        Aspirante creado exitosamente!
+    </div>
+    <div class="alert alert-danger" *ngIf="status == 'error'" role="alert">
+        Hubo un error al crear el registro, revise todos los campos e intente nuevamente
+    </div>
+  
+    <input type="submit"  class="form-control btn btn-success mb-5 mt-5" value="Crear perfil">
+<!-- [disabled]="!aspiranteForm.valid" -->
+    </form>
+    
+</div>
