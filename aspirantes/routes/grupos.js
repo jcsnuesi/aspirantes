@@ -6,8 +6,8 @@ var CodigoController = require('../controller/grupos')
  
 var md_auth = require('../middleware/auth')
 
-// RUTAS GET    
-
+// RUTAS GET     
+ 
 router.get('/grupos', md_auth.autenticacion, CodigoController.getGroups)
 router.get('/grupo-total-aspirantes/:codigo', md_auth.autenticacion, CodigoController.cantidadApirantesPorGrupo)
 router.get('/gruposId/:id', md_auth.autenticacion, CodigoController.getGroupById)

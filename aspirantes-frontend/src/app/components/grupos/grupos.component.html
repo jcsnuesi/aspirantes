@@ -3,16 +3,36 @@
 <div *ngIf="status == 'success'" class="alert alert-success mt-3" role="alert">
    Codigo creado exitosamente!
 </div>
+
 <div class="alert alert-danger mt-3" *ngIf="status == 'error'" role="alert">
     {{mgs}}
 </div>
 
-<div class=" mt-3 "  style="width: 30%;" >
-    <h3>Nuevo codigo</h3>
+<div class="mt-3"  style="width: 50%;" >
+    <h4>Opciones de entrada de datos</h4>
     <hr>
+
+        <div class="btn-group mb-3" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" (click)="mode($event)" name="btnradio" id="manual" autocomplete="off">
+            <label class="btn btn-outline-primary" for="manual">Entrada manual</label>
+        
+            <input type="radio" class="btn-check"  (click)="mode($event)" name="btnradio" id="upfile" autocomplete="off">
+            <label class="btn btn-outline-primary" for="upfile">Subir archivo</label>
+        
+        
+        </div>
+
+        <!-- Subir archivo -->
+
+    <div *ngIf="changer == 'upfile'">
+        <h4>Cargar Archivo Excel</h4>
+        <input class="form-control" type="file" (change)="onFileChange($event)" accept=".xlsx, .xls, .csv">
+        <button (click)="processFile()" class="btn btn-success mt-2">Procesar Archivo</button>
+    </div>
     
+            <!-- Fin Subir archivo -->
     
-    <form #grupoForm="ngForm" (ngSubmit)="onSubmit(grupoForm)">
+    <form #grupoForm="ngForm" *ngIf="changer == 'manual'" (ngSubmit)="onSubmit(grupoForm)">
     
         <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">Codigo:</span>
@@ -27,10 +47,15 @@
 
    
     <div class="mt-4">
-    
-        <h3>Codigos existentes</h3>
-        <hr>
-        <p>Haz click en el codigo que desees para crear un nuevo aspirante.</p>
+     
+       
+       
+        <div style="display: block;">
+            <h4>Codigos existentes</h4>
+            <hr>
+                <p>Haz click en el codigo que desees para crear un nuevo aspirante.</p>
+        </div>
+     
     
         <div class="d-flex">
 

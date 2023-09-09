@@ -12,12 +12,82 @@ const { group } = require('console')
 
 var RegistrosController = {
 
+    crearAspirantesPorDoc:async function(aspirantesArray, indice) {
 
-    creaRegistro: function (req, res) {
 
-        var params = req.body
-        var condicion = []
+
+        let arrayAspitantes = aspirantesArray
+        var duplicados = []
        
+        
+        if ((indice+1) == arrayAspitantes.length) {
+
+            return { status: 'success', message: 'Completado', duplicado: duplicados }
+        }
+
+
+        var aspirante = new Aspirantes()
+        var grupo = new Grupos()
+
+      
+        for (const key in arrayAspitantes[indice]) {
+
+        
+            if (key == 'codigo') {
+
+                aspirante['sexo'] =  (aspirantesArray[indice]['codigo'].startsWith('F')) ? 'Femenino' : 'Masculino'
+                aspirante[key] = aspirantesArray[indice][key]
+            }
+            
+            aspirante[key] = aspirantesArray[indice][key]
+
+        }
+
+        const codigoEncontrado = await Grupos.findOne({ codigo: (aspirante.codigo).substring(0,2)})
+        const aspiranteEncontrado = await Aspirantes.findOne({ codigo: aspirante.codigo})
+              
+    
+        // console.log(aspiranteEncontrado)
+
+        if (codigoEncontrado == null) {
+            
+            grupo.codigo = (aspirante.codigo).substring(0, 2)
+            grupo.aspirantesId.push(aspirante._id)
+            await grupo.save();
+        }else{
+            codigoEncontrado.aspirantesId.push(aspirante._id)
+            await Grupos.findOneAndUpdate({ codigo: (aspirante.codigo).substring(0, 2) }, codigoEncontrado,{new:true})
+         
+        }
+        
+
+        if (aspiranteEncontrado != null) {            
+            
+           duplicados.push(aspirante.codigo)
+         
+
+        } else {
+                  
+         
+            await aspirante.save();
+        }
+        
+        RegistrosController.crearAspirantesPorDoc(arrayAspitantes, indice+1)
+      
+    },
+    creaRegistro:async function (req, res) {
+
+        
+        var params = req.body      
+        var condicion = []
+      
+        
+       
+        if (params.length > 1) {
+          const respuesta = await RegistrosController.crearAspirantesPorDoc(params, 0)
+            console.log(respuesta)
+            return res.status(200).send(respuesta) 
+        }
         
         var avatarPath = req.files.avatar.path
         var namesplit = avatarPath.split(/[\\.]+/g)
@@ -97,6 +167,7 @@ var RegistrosController = {
 
                     const idAspirante = userCreated._id
                     Grupos.findOne({ codigo: (params.codigo.toUpperCase()).substring(0, 2) }, (err, success) => {
+                        // Crear una condicion para cuando el grupo no exista que lo cree
 
                         success.aspirantesId.push(idAspirante)
 
@@ -134,7 +205,9 @@ var RegistrosController = {
     },
     aspirantes: function (req, res) {
 
-        Aspirantes.find((err, aspirantesFound) => {
+        
+
+        Aspirantes.find({ estado: { $ne: "inactivo" } },(err, aspirantesFound) => {
 
 
             if (err || aspirantesFound == null || (aspirantesFound).length <= 0) {
@@ -203,7 +276,8 @@ var RegistrosController = {
 
         var params = req.body;
         var condicion = []
-
+       
+        
         try {
 
             for (const key in params) {
@@ -235,19 +309,31 @@ var RegistrosController = {
 
         if (!condicion.includes(false)) {
 
-            Aspirantes.findOne({ _id: params.id }, (err, userFound) => {
+            Aspirantes.findOne({ _id: params.id }, async  (err, userFound) => {
 
                 if (err || userFound == null || (userFound).length <= 0) {
 
                     var info = _errors.user_status(err, userFound)
 
                     return res.status(info.code).send({
-
+ 
                         status: info.status,
                         message: info.message
                     })
 
                 }
+
+                if (params.estatus == 'inactivo') {
+
+                    const grupoAspirante = await Grupos.findOne({ aspirantesId: userFound._id })
+
+                    console.log((grupoAspirante.aspirantesId).shift())
+                    await Grupos.findOneAndUpdate({ codigo: (userFound.codigo).substring(0, 2) }, grupoAspirante,{new:true} )
+                    
+                }
+
+               
+                
                
 
                 Aspirantes.findOneAndUpdate({ _id: params.id }, params, { new: true }, (err, updated) => {

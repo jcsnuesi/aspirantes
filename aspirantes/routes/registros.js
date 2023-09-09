@@ -9,8 +9,10 @@ var multipart = require('connect-multiparty')
 var uploadDir = multipart({uploadDir:'assets/aspirantes'})
 
 // RUTAS POST
-
+ 
 router.post('/crear-aspirante', [md_auth.autenticacion, uploadDir], RegistrosController.creaRegistro)
+
+
 
 // RUTAS GET
 

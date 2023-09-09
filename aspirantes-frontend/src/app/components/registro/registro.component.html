@@ -51,6 +51,12 @@
     
     </div>
     <div class="mb-3">
+        <label for="correo" class="form-label">Avatar</label>
+        <angular-file-uploader id="filer" (fileSelected)="predictUpload($event)" [config]="afuConfig" [resetUpload]=false
+            (ApiResponse)="predictUpload($event)">
+        </angular-file-uploader>
+    </div>
+    <div class="mb-3">
         <label for="correo" class="form-label">Correo</label>
         <input type="email" class="form-control" #correo="ngModel" name="correo" [(ngModel)]="user.correo" id="correo" required>
 

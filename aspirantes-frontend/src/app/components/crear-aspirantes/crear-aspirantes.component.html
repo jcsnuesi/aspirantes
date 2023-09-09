@@ -5,6 +5,7 @@
 
     <hr>
 
+
     <form #aspiranteForm="ngForm" (ngSubmit)="onSubmit(aspiranteForm)">
 
         <div class="form-group" >
@@ -24,7 +25,7 @@
                 <img src="{{foto}}" class="card-img-top"style="padding: 10px;width: 350px;height: 320px;" alt="...">
             </span>
             
-            <input type="file"  name="avatar"  (change)="onFileSelected($event)" #avatar="ngModel" [(ngModel)]="aspirante.avatar" id="imgAspirantes">
+            <input type="file"  name="avatar"  (change)="onFileSelected($event)"  id="imgAspirantes">
        
       
         
@@ -186,7 +187,7 @@
 
                     <label for="colorpiel" class="form-label">Color piel</label>
                     <select class="form-select" aria-label="Default select example" name="colorpiel"  #colorpiel="ngModel" [(ngModel)]="aspirante.colorpiel" > 
-                        <option selected disabled>Seleccionar Piel....</option>
+                        <option selected>Seleccionar Piel....</option>
                         <option value="clara">Clara</option>
                         <option value="mestiza">Mestiza</option>
                         <option value="mulata">Mulata</option>
@@ -195,7 +196,8 @@
                         <option value="blanca">Blanca</option>
                     </select>
                 
-                   
+                    
+                    
                 
                     <span *ngIf="!colorpiel.valid && colorpiel.touched" class="invalid-feedback d-block">
                         Campo requerido.
@@ -306,9 +308,9 @@
             
                 <label for="psic" class="form-label">PSIC</label>
             
-                <select name="psic" #psic="ngModel" [(ngModel)]="aspirante.psic" id="psic" class="form-control"
+                <select name="psic" #psic="ngModel" [(ngModel)]="aspirante.psic" id="psic" class="form-select"
                     required>
-                    <option value="#" disabled selected>Seleccionar...</option>
+                    <option disabled selected>Seleccionar...</option>
                     <option value="apto">Apto</option>
                     <option value="no_apto">No apto</option>
                 </select>
@@ -351,9 +353,9 @@
             
                 <label for="medicos" class="form-label">Medicos</label>
             
-                <select name="medicos" #medicos="ngModel" [(ngModel)]="aspirante.medicos" id="medicos" class="form-control"
+                <select name="medicos" #medicos="ngModel" [(ngModel)]="aspirante.medicos" id="medicos" class="form-select"
                     required>
-                    <option value="#" disabled selected>Seleccionar...</option>
+                    <option disabled selected>Seleccionar...</option>
                     <option value="apto">Apto</option>
                     <option value="no_apto">No apto</option>
                 </select>
@@ -387,11 +389,13 @@
         
             <label for="estatus" class="form-label">Estatus</label>
         
-            <select name="estatus" #estatus="ngModel" [(ngModel)]="aspirante.estatus" id="estatus" class="form-control"
+            <select name="estatus" #estatus="ngModel" [(ngModel)]="aspirante.estatus" id="estatus" class="form-select"
                 required>
-                <option value="#" disabled selected>Seleccionar...</option>
+                <option disabled selected>Seleccionar estatus...</option>
                 <option value="aprobado">Aprobado</option>
                 <option value="reprobado">Reprobado</option>
+                <option value="reprobado">Pendiente</option>
+                <option value="reprobado">Inactivo</option>
             </select>
         
         </div>

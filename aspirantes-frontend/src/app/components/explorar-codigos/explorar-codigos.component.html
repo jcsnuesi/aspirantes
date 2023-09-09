@@ -5,7 +5,7 @@
 <select (change)="buscarCodigo($event)" name="codigos" #codigos="ngModel" aria-label="Default select example"  [(ngModel)]="codigo" id="codigos" class="form-select" required
 >
     <option disabled selected>Seleccionar codigo...</option>
-    <option *ngFor="let cod of codigosDisponibles" value="{{cod.codigo}}">{{cod.codigo}}</option>
+    <option *ngFor="let cod of codigosDisponibles" value="{{cod?.codigo}}">{{cod?.codigo}}</option>
     
 </select>
 </div>
@@ -16,41 +16,93 @@
 
 <table class="table table-striped mt-5 table-bordered" >
     <tr>
-        <th scope="col" style="font-size: 22px;padding: 8px;">Codigo</th>
-        <th style="font-size: 22px;padding: 8px;">Foto</th>
-        <th style="font-size: 22px;padding: 8px;">Nombres</th>
-        <th style="font-size: 22px;padding: 8px;">Apellidos</th>
-        <th style="font-size: 22px;padding: 8px;">Fecha de nacimiento</th>
-        <th style="font-size: 22px;padding: 8px;">Edad</th>
-        <th style="font-size: 22px;padding: 8px;">Recomendacion</th>
-        
 
+        <th scope="col" style="font-size: 18px;padding: 8px;">
+        <input type="checkbox" name="allCheckbox" id="allCheckbox"> </th>
+        <th scope="col" style="font-size: 18px;padding: 8px;">#</th>
+        <th scope="col" style="font-size: 18px;padding: 8px;">Codigo</th>
+        <th style="font-size: 18px;padding: 8px;">Foto</th>
+        <th style="font-size: 18px;padding: 8px;">Nombres</th>
+        <th style="font-size: 18px;padding: 8px;">Apellidos</th>
+        <th style="font-size: 18px;padding: 8px;">Edad</th>
+        <th style="font-size: 18px;padding: 8px;">Recomendacion</th>
+        <th style="font-size: 18px;padding: 8px;">Acciones</th>
+        
     </tr>
     <tbody>
+
       
         <tr *ngFor="let aspiranteData of aspirantesGrupo; let i = index">
+            <td style="font-size: 18px;">
+                <input type="checkbox" name="{{'del'+i}}" id="{{'del'+i}}">
+            </td>
             <th scope="row">{{i+1}}</th>
-           
+
+            <td style="font-size: 18px;">{{aspiranteData?.codigo}}</td>
             <td>
-                <a data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="aspirante(i)" style="width: 228px;">
-                    <img  style="width: 228px;height: 244px;" src="{{this.url +'avatarCodigo/'+ aspiranteData.avatar}}" alt=""> 
-                    </a>
+                <a data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="aspirante(i)" >
+                    <img  style="width: 60px;height: 60px;" src="{{ aspiranteData?.avatar}}" alt=""> 
+                </a>
                 
                 </td>
             
           
            
-            <td style="font-size: 22px;">{{aspiranteData.nombres}}</td>
-            <td style="font-size: 22px;">{{aspiranteData.apellidos}}</td>
-            <td style="font-size: 22px;">{{aspiranteData.fecha_nacimiento
+            <td style="font-size: 18px;">{{aspiranteData?.nombres}}</td>
+            <td style="font-size: 18px;">{{aspiranteData?.apellidos}}</td>
+           
+            <td style="font-size: 18px;">{{aspiranteData?.edad
 }}</td>
-            <td style="font-size: 22px;">{{aspiranteData.edad
-}}</td>
-            <td style="font-size: 22px;">{{aspiranteData.recomendacion}}</td>
+            <td style="font-size: 18px;">{{aspiranteData?.recomendacion}}
+            </td>
+            <td style="font-size: 18px;">
+                <tr>
+                    <td>
+                    <a [routerLink]="['/panel/modificar-aspirante',aspiranteData.cedula]" class="btn btn-warning" style="color: white;" >Editar</a>
+                    </td>
+                    |
+                    <td>
+
+                        <a href="#" data-bs-toggle="modal" (click)="aspirante(i)" data-bs-target="#modModal" class="btn btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            
+            </td>
            
         </tr>
     </tbody>
 </table> 
+
+    <!-- Modal para editar y eliminar -->
+
+
+    
+
+<!-- Modal -->
+<div class="modal fade" id="modModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar aspirante</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <p>Esta accion eliminara permanentemente el codigo: <b> {{ modalInfo?.codigo }} </b> Perteneciente a: <b> {{   modalInfo?._id + " " +modalInfo?.apellidos }} </b></p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="{{modalInfo?._id}}" (click)="eliminarActualizar($event)" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!--FIN Modal para editar y eliminar -->
+
+
+
+
 
 
 
@@ -67,30 +119,30 @@
 
 
                     <div class="foto tablaModal mt-5">
-                        <img  style="width: 450px;height: 500px;" src="{{this.url +'avatarCodigo/'+modalInfo.avatar}}" alt="">
+                        <img  style="width: 450px;height: 500px;" src="{{modalInfo?.avatar}}" alt="">
                     </div>
 
-                    <div class="contenido">
+                    <div class="contenido" id="start-presentation">
     
-                        <label class="input-group-text" style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 24px;">Datos personales</label>
+                        <label class="input-group-text" style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 18px;">Datos personales</label>
                         <div class="centrar">
 
                         <table class="table">
                             <tr>
                               
-                            <th style="font-size: 22px; margin-left: 20px;">Nombres</th>
-                            <th style="font-size: 22px;margin-left: 20px;">Apellidos</th>
-                            <th style="font-size: 22px;margin-left: 20px;">Fecha de nacimiento</th>
-                            <th style="font-size: 22px;margin-left: 20px;">Edad</th>
-                            <th style="font-size: 22px;margin-left: 20px;">Cedula</th>
+                            <th style="font-size: 18px; margin-left: 20px;">Nombres</th>
+                            <th style="font-size: 18px;margin-left: 20px;">Apellidos</th>
+                            <th style="font-size: 18px;margin-left: 20px;">Fecha de nacimiento</th>
+                            <th style="font-size: 18px;margin-left: 20px;">Edad</th>
+                            <th style="font-size: 18px;margin-left: 20px;">Cedula</th>
                             </tr>
                             <tbody>
                                 <tr>
-                                  <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.nombres}}</td>
-                                  <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.apellidos}}</td>
-                                  <td style="font-size: 22px;margin-left: 20px;">{{fechanacimiento}}</td>
-                                  <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.edad}}</td>
-                                  <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.cedula}}</td>
+                                  <td style="font-size: 18px;margin-left: 20px;">{{modalInfo?.nombres}}</td>
+                                  <td style="font-size: 18px;margin-left: 20px;">{{modalInfo?.apellidos}}</td>
+                                  <td style="font-size: 18px;margin-left: 20px;">{{fechanacimiento}}</td>
+                                  <td style="font-size: 18px;margin-left: 20px;">{{modalInfo?.edad}}</td>
+                                  <td style="font-size: 18px;margin-left: 20px;">{{modalInfo?.cedula}}</td>
                                     
                                   
                                 </tr>
@@ -102,7 +154,7 @@
                     <div class="evaluaciones">
 
                         <label class="input-group-text"
-                            style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 24px;">Evaluaciones</label>
+                            style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 18px;">Evaluaciones</label>
 
                             <div style="display: flex;justify-content: center;">
                             
@@ -116,26 +168,24 @@
                           
                             <div class="observaciones">
                                 <label class="input-group-text"
-                                    style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 24px;">Evaluaciones</label>
+                                    style="padding: 12px;margin: 12px auto;font-weight: bold;font-size: 18px;">Evaluaciones</label>
 
                                         <table class="table">
                                             <tr>
                                         
-                                                <th style="font-size: 22px; margin-left: 20px;">Recomendacion</th>
-                                                <th style="font-size: 22px;margin-left: 20px;">Observacion</th>
-                                                <th style="font-size: 22px;margin-left: 20px;">medicos</th>
-                                                <th style="font-size: 22px;margin-left: 20px;">Psicologica</th>
+                                                <th style="font-size: 18px; margin-left: 20px;">Recomendacion</th>
+                                                <th style="font-size: 18px;margin-left: 20px;">Observacion</th>
+                                                <th style="font-size: 18px;margin-left: 20px;">medicos</th>
+                                                <th style="font-size: 18px;margin-left: 20px;">Psicologica</th>
                                             
                                             </tr>
                                             <tbody>
                                                 <tr>
-                                                    <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.recomendacion}}</td>
-                                                    <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.observacion}}</td>
-                                                    <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.medicos}}</td>
-                                                    <td style="font-size: 22px;margin-left: 20px;">{{modalInfo.psic}}</td>
+                                                    <td style="font-size: 18px;margin-left: 20px;">{{modalInfo?.recomendacion}}</td>
+                                                    <td style="font-size: 18px;margin-left: 20px;">{{modalInfo?.observacion}}</td>
+                                                    <td style="font-size: 18px;margin-left: 20px;">{{modalInfo?.medicos}}</td>
+                                                    <td style="font-size: 18px;margin-left: 20px;">{{modalInfo?.psic}}</td>
                                                
-                                                    
-                                        
                                         
                                                 </tr>
                                             </tbody>
@@ -143,21 +193,19 @@
                             </div>
                     </div>
                 </div>
-
-               
+              
                
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" (click)="aspirante(posicion-1)" class="btn btn-dark">Anterior</button>
-                <button type="button" (click)="aspirante(posicion+1)" class="btn btn-primary">Siguiente</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="#start-presentation" id="anterior" (click)="aspirante(posicion-1)" class="btn btn-dark">Anterior</a>
+                    <a href="#start-presentation" id="siguiente"  (click)="aspirante(posicion+1)"  class="btn btn-primary">Siguiente</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Full screen modal -->
- <div class="modal-dialog modal-fullscreen-sm-down">
-    ...
-</div>
+
+
 
 </div>

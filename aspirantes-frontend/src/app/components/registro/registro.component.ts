@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/service/user.service';
+import { global } from 'src/app/service/global';
 
 @Component({
   selector: 'app-registro',
@@ -14,6 +15,8 @@ export class RegistroComponent implements OnInit{
   public user:any;
   public status: string;
   public message:string;
+  public afuConfig:any;
+  public url:string;
 
   constructor(private _userService: UserService){
 
@@ -21,6 +24,39 @@ export class RegistroComponent implements OnInit{
     this.status = ''
     this.titulo = 'Registro de usuarios'
     this.user = new User('','','','','','','');
+    this.url = global.url;
+
+    this.afuConfig = {
+      multiple: false,
+      formatsAllowed: ".jpg,.jpeg,.png,.gif",
+      maxSize: "50",
+      uploadAPI: {
+        url: this.url +'subir-avatar',
+        method: "POST",
+        itemAlias: 'file0',
+        headers: {
+        
+          "Authorization": this._userService.getToken()
+        }
+       
+
+      },
+
+      theme: "attachPin",
+      hideProgressBar: true,
+      hideResetBtn: true,
+      hideSelectBtn: true,
+      fileNameIndex: true,
+      autoUpload: false,
+      replaceTexts: {
+
+        attachPinBtn: 'Import .csv file to predict...',
+        afterUploadMsg_success: 'Successfully Uploaded !',
+        afterUploadMsg_error: 'Upload Failed !',
+        sizeLimit: 'Size Limit'
+      }
+
+    }
   }
 
   ngOnInit(): void {
@@ -51,6 +87,11 @@ export class RegistroComponent implements OnInit{
     )
 
    
+  }
+
+  predictUpload(event:any){
+    var respuesta = event.body
+    console.log(respuesta)
   }
 
 }

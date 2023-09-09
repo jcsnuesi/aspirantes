@@ -17,6 +17,7 @@ const AppRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'panel', component: MainComponent, children: [
         { path: 'nuevo-aspirante/:id', component: CrearAspirantesComponent },
+        { path: 'modificar-aspirante/:id', component: CrearAspirantesComponent },
         { path: 'nuevo-grupo', component: GruposComponent }
     ]},
     { path: 'explorar-codigos', component: ExplorarCodigosComponent },

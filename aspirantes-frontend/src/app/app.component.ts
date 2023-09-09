@@ -13,6 +13,7 @@ export class AppComponent implements OnInit, DoCheck {
   public title = 'aspirantes-frontend';
   public url:string;
   public identity: any;
+  public autorizacion:boolean;
 
   constructor(
 
@@ -20,17 +21,23 @@ export class AppComponent implements OnInit, DoCheck {
     private _route: Router,
   ){
    
+   
     this.url = global.url;
     this.identity = this._userService.getIdentidad() || false
   }
 
   ngOnInit(): void {
-    this.identity
-   
+    
+    
   }
-
+  
   ngDoCheck(): void {
-      this.identity = this._userService.getIdentidad()
+
+    this.identity = this._userService.getIdentidad()
+    this.autorizacion = this.identity.user?.role == 'root' ? true : false
+
+    
+
 
   }
 

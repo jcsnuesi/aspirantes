@@ -41,55 +41,64 @@ export class CrearAspirantesComponent implements OnInit{
     this.aspirante = new Aspirantes('', '', '', '', '', new Date, 0, '', '', '', '', '', '', '', '', '', '', '',0,0,0,'',0,'',''); 
 
     this.token = this._userServices.getToken()
-    this.afuConfig = {
-      multiple: false,
-      formatsAllowed: ".jpg, .jpeg, .png, .gif", 
-      maxSize: "50",
-      uploadAPI: {
-        url: "http://localhost:3992/api/actualizar-avatar",
-        method: "PUT",
-        itemAlias: 'avatar'
-
-      },
-
-      theme: "attachPin",
-      hideProgressBar: false,
-      hideResetBtn: true,
-      replaceTexts: {
-
-        attachPinBtn: 'Import file...',
-        afterUploadMsg_success: 'Successfully Uploaded !',
-        afterUploadMsg_error: 'Upload Failed !',
-        sizeLimit: 'Size Limit'
-      }
-
-    }
+   
+    
 
   }
 
   ngOnInit(): void {
 
-    this.aspirante.colorpiel = "Seleccionar Piel...."
-    this.aspirante.colorpelo = "Seleccionar color Pelo...."
-    this.aspirante.constitucionFisica = "Seleccionar fisico...."
 
-    this._activateRoute.params.subscribe(params => {
+
+    this._activateRoute.params.subscribe((params) => {
        const codigo =  params['id']
-      
-      this._userServices.grupoCodigo(codigo, this.token).subscribe(
-        res => {
+    
+      if (codigo.length > 2) {
+    
+       this._userServices.getAspirante(codigo,this.token).subscribe(
+          res => {
+         
+            if (res.status == 'success') {
+              var calendar = {
+                Jan: '01', Feb: '02', Marc:'03', Apr: '04', May: '05',
+                Jun: '06', Jul: '07', Aug: '08', Sep:'09', Oct: '10', Nov: '11', Dic: '12'
+              }
 
-          this.aspirante.codigo = codigo + '-'+ res.total
+              this.foto = res.usuario.avatar
+              this.aspirante = res.usuario
+              var fechan = res.usuario.fecha_nacimiento
+              this.aspirante.fecha_nacimiento = fechan.split("-")[2] + "-" + calendar[fechan.split("-")[0]] + "-" + fechan.split("-")[1]
+             
           
-       
-        },
-        error => {
-          console.log(error)
-        }
+            }
 
-      )
-      this.aspirante.codigo = codigo[0] +'-'+ (parseInt(codigo[1])  + 1)
-      this.aspirante.sexo = codigo[0].substring(0,1)
+       
+          },
+          error => {
+            console.log(error)
+          }
+        )
+        
+       }else{
+
+        this._userServices.grupoCodigo(codigo, this.token).subscribe(
+          res => {
+          
+            this.aspirante.codigo = codigo + '-' + (res.total + 1)
+            console.log(codigo)
+            console.log(res.total)
+          },
+          error => {
+            console.log(error)
+          }
+
+        )
+
+     
+        
+
+       }
+     
 
     })
    
@@ -242,56 +251,8 @@ export class CrearAspirantesComponent implements OnInit{
     this.spinner = spinner
   }
 
-  predictUpload(eve: any = "") {
 
-
-    this.spinnserSet(true)
-    console.log(this.spinner)
-
-    const res = (eve: any) => {
-
-      var hide = document.getElementById('filer')
-      hide?.setAttribute('hidden', 'hidden')
-
-
-
-
-      if (eve.status == 200) {
-
-        this.spinnserSet(false)
-        this.clase = { 'alert alert-success': true }
-
-        console.log(eve)
-        var data_obj = eve.body
-        data_obj.accurancy
-        // this.foto = this.url + 'avatar/' + eve.
-        this.successf = true
-        this.message = data_obj.success
-
-        hide?.removeAttribute('hidden')
-
-      } else if (eve.status == 400) {
-
-        this.spinnserSet(false)
-        this.clase = { 'alert alert-danger': true }
-
-        this.message = eve.error.error
-        hide?.removeAttribute('hidden')
-
-
-
-
-      }
-
-
-
-    }
-
-
-
-    eve.onchage = res(eve)
-
-  }
+  
        
   }
 

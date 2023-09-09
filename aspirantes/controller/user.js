@@ -420,7 +420,7 @@ var UserController = {
                     status: 'error',
                     message: 'Error del servidor, intente nuevamente.'
                 })
-                
+                 
             }
 
 

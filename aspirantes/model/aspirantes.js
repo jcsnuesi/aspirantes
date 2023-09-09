@@ -5,20 +5,20 @@ var schema = mongoose.Schema
 
 var AspitantesSchema = schema({
 
-    avatar: { type: String, required: true },
+    avatar: { type: String },
     nombres:{type:String, required: true},
     apellidos:{type:String, required: true},
     sexo:{type:String, required: true},
     cedula:{type:String, required: true},
-    fecha_nacimiento:{type:Date, required: true},
+    fecha_nacimiento: { type: String, required: true},
     edad:{type:Number, required: true},
     estatura: { type: String, required: true},
-    celular:{type:String, required: true},
-    peso:{type:String, required: true},
-    colorpiel:{type:String, required: true},
-    colorpelo:{type:String, required: true},
-    constitucionFisica:{type:String, required: true},
-    colorojos:{type:String, required: true},
+    celular:{type:String},
+    peso:{type:String},
+    colorpiel:{type:String},
+    colorpelo:{type:String},
+    constitucionFisica:{type:String},
+    colorojos:{type:String},
     correo: { type: String},
     recomendacion: { type: String, required: true },
     observacion:{type:String},
@@ -29,7 +29,7 @@ var AspitantesSchema = schema({
     medicos:{type:String, required: true},//evaluacion medica -apto o no apto
     fisico: { type: Number, required: true},    
     codigo: { type: String, required: true },
-    estatus: { type: String, default: 'en proceso' }
+    estatus: { type: String, default: 'seleccionado' }
 }, { timestamps: true })
 
 

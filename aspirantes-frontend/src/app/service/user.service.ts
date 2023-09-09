@@ -97,12 +97,26 @@ export class UserService{
 
         var header = new HttpHeaders().set('Authorization', token)
 
-
-
-
-        console.log("Datos:",nuevo_aspirante)
         return this._http.post(this.url + 'crear-aspirante', nuevo_aspirante , { headers: header })
 
 
+    }
+
+    actualizarAspirante(data:any, token:string):Observable<any>{
+
+        var params = JSON.stringify(data)
+
+        var header = new HttpHeaders().set('Content-Type','application/json').set('Authorization', token)
+
+        return this._http.put(this.url + 'actualizar-aspirante', params, {headers:header})
+
+    }
+
+    getAspirante(ced:string, token:string):Observable<any>{
+
+        var header = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', token)
+
+
+        return this._http.get(this.url + 'aspirante/'+ced, { headers: header })
     }
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/service/user.service';
 import { global } from 'src/app/service/global';
 import * as moment from 'moment';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations'; // Importa NoopAnimationsModule
+
 
 
 @Component({
@@ -67,37 +69,86 @@ export class ExplorarCodigosComponent implements OnInit{
       }
     )
 
+
+    this._userService.getCodigos(this.token).subscribe(
+      res => {
+
+        var allgruops = []
+        res.grupos.forEach((element, index) => {
+
+          for (let index = 0; index < element.aspirantesId.length; index++) {
+            allgruops.push(element.aspirantesId[index]);
+
+          }
+
+
+        });
+
+
+        this.aspirantesGrupo = allgruops
+      },
+      error => {
+        console.log(error)
+      }
+    )
+
       
   }
 
   buscarCodigo(event:any){
     const id = event.target.value
-    
 
-    this._userService.grupoCodigoById(id,this.token).subscribe(
+    this._userService.grupoCodigoById(id, this.token).subscribe(
 
-      response=>{
+      response => {
 
         this.aspirantesGrupo = response.grupos.aspirantesId
 
 
-        console.log(this.aspirantesGrupo)
-      },err =>{
+      }, err => {
         console.log(err)
       }
     )
+
+   
   }
 
   aspirante(event:any){
-    this.modal = 'modal';
+
+    var anchorDom = document.querySelectorAll('a[href^="#"]')
+ 
+    anchorDom.forEach((links) => {
+      links.addEventListener("click", function (e) {
+        e.preventDefault()
+        const targetId = this.getAttribute("href").substring(1);
+        const targetElement = document.getElementById(targetId);
+      
+        if (targetElement) {
+
+          // Usa el método scrollIntoView para desplazarse suavemente al elemento
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+
+      })
+
+      
+    });
+ 
+    
+    var calendar = { Jan: "Enero", Feb: "Febrero", Marc: "Marzo", Apr: "Abril", May:"Mayo",
+    Jun: "Junio", Jul: "Julio", Aug: "Agosto", Sep:"Septiembre",Oct:"Octubre",Nov:"Noviembre",Dic:"Diciembre"}
+    
 
 
     this.modalInfo = this.aspirantesGrupo[event] 
     this.posicion = event
-   
-    
-    this.fechanacimiento = moment(this.modalInfo.fecha_nacimiento).format('dddd, D [de] MMMM [de] YYYY');
 
+    var fn = (this.modalInfo.fecha_nacimiento).split("-");
+    console.log(fn)
+    
+    this.fechanacimiento = fn[1] + " de " +  calendar[fn[0]] + " del " + fn[2]
+    
+         
     this.multi = [
       {
         "name": "Cultura General",
@@ -106,10 +157,10 @@ export class ExplorarCodigosComponent implements OnInit{
             "name": "CG",
             "value": this.modalInfo.cg
           }
-
+          
         ]
       },
-
+      
       {
         "name": "Psicotécnicas",
         "series": [
@@ -127,11 +178,11 @@ export class ExplorarCodigosComponent implements OnInit{
             "name": "PROM",
             "value": this.modalInfo.prom
           }
-
+          
         ]
       }
       ,
-
+      
       {
         "name": "Fisico",
         "series": [
@@ -139,13 +190,36 @@ export class ExplorarCodigosComponent implements OnInit{
             "name": "FS",
             "value": this.modalInfo.fisico
           }
-
+          
         ]
       }
       
     ];
+    
+    
+    
+    this.modal = 'modal';
+  }
 
 
-    console.log(this.aspirantesGrupo[event])
+  eliminarActualizar(event:any){
+
+    var status = { 'estatus': 'inactivo', id: event.target.id}
+
+    console.log(status, " ", this.token)
+    this._userService.actualizarAspirante(status,  this.token).subscribe(
+
+      res => {
+
+        console.log(res)
+        window.location.reload()
+
+      },
+      err =>{
+
+      }
+    )
+
+
   }
 }

@@ -3,8 +3,11 @@ var validator = require('validator')
 let _errors = require('../error/exceptions')
 const path = require('path')
 const fs = require('fs')
+const ExcelJS = require('exceljs');
 
 var CodigoController = {
+
+    
     crearGrupo: function (req, res) {
 
         var params = req.body
@@ -82,7 +85,9 @@ var CodigoController = {
     },
     getGroups:function(req, res){
 
-        Grupos.find((err, group)=>{
+        Grupos.find().populate('aspirantesId', 'nombres avatar nombres apellidos sexo cedula fecha_nacimiento edad estatura celular correo recomendacion observacion psic cg psict prom medicos fisico codigo estatus').exec((err, group)=>{
+
+            
 
             if (err) {
                 return res.status(404).send({
@@ -102,13 +107,13 @@ var CodigoController = {
         
     },
     cantidadApirantesPorGrupo:async function(req,res){
-
+ 
         var params = req.params.codigo
 
        const AspitantesEnGrupo = await Grupos.find({ codigo: params })
-        const total = (AspitantesEnGrupo[0].aspirantesId).length + 1
+        const total = (AspitantesEnGrupo[0].aspirantesId).length
 
-       
+        console.log(AspitantesEnGrupo)
         return res.status(200).send({
             status: "success",
             codigo: AspitantesEnGrupo[0].codigo,
@@ -276,7 +281,8 @@ var CodigoController = {
 
 
         })
-    }, avatarCodigo: function (req, res) {
+    },
+     avatarCodigo: function (req, res) {
 
         let filename = req.params.filename
         let pathFile = 'assets/aspirantes/' + filename
