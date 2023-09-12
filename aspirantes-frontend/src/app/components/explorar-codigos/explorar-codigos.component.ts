@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { UserService } from 'src/app/service/user.service';
 import { global } from 'src/app/service/global';
 import * as moment from 'moment';
@@ -49,6 +49,17 @@ export class ExplorarCodigosComponent implements OnInit{
     this.url = global.url;
 
   }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    console.log('presssss')
+    if (event.key === 'ArrowLeft') {
+      this.aspirante(this.posicion - 1);
+    } else if (event.key === 'ArrowRight') {
+      this.aspirante(this.posicion + 1);
+    }
+  }
+
 
   ngOnInit(): void {
 
@@ -112,6 +123,7 @@ export class ExplorarCodigosComponent implements OnInit{
 
    
   }
+
 
   aspirante(event:any){
 

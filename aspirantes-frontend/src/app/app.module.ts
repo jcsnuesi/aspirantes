@@ -19,6 +19,7 @@ import { MainComponent } from './components/main/main.component';
 import { GruposComponent } from './components/grupos/grupos.component';
 import { ExplorarCodigosComponent } from './components/explorar-codigos/explorar-codigos.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ActualizarPorGruposComponent } from './components/actualizar-por-grupos/actualizar-por-grupos.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     CrearAspirantesComponent,
     MainComponent,
     GruposComponent,
-    ExplorarCodigosComponent
+    ExplorarCodigosComponent,
+    ActualizarPorGruposComponent
    
   ],
   imports: [

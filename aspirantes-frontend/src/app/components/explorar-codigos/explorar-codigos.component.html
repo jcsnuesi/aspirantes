@@ -87,7 +87,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-               <p>Esta accion eliminara permanentemente el codigo: <b> {{ modalInfo?.codigo }} </b> Perteneciente a: <b> {{   modalInfo?._id + " " +modalInfo?.apellidos }} </b></p>
+               <p>Esta accion eliminara permanentemente el codigo: <b> {{ modalInfo?.codigo }} </b> Perteneciente a: <b> {{   modalInfo?.nombres + " " +modalInfo?.apellidos }} </b></p>
                 
             </div>
             <div class="modal-footer">
@@ -99,11 +99,6 @@
 </div>
 
     <!--FIN Modal para editar y eliminar -->
-
-
-
-
-
 
 
  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" *ngIf="modal == 'modal'">

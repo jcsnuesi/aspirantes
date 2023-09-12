@@ -11,7 +11,7 @@
 <div class="mt-3"  style="width: 50%;" >
     <h4>Opciones de entrada de datos</h4>
     <hr>
-
+ 
         <div class="btn-group mb-3" role="group" aria-label="Basic radio toggle button group">
             <input type="radio" class="btn-check" (click)="mode($event)" name="btnradio" id="manual" autocomplete="off">
             <label class="btn btn-outline-primary" for="manual">Entrada manual</label>
@@ -27,7 +27,8 @@
     <div *ngIf="changer == 'upfile'">
         <h4>Cargar Archivo Excel</h4>
         <input class="form-control" type="file" (change)="onFileChange($event)" accept=".xlsx, .xls, .csv">
-        <button (click)="processFile()" class="btn btn-success mt-2">Procesar Archivo</button>
+        
+        <button disabled id="fileSub" (click)="processFile()" class="btn btn-success mt-2">Procesar Archivo</button>
     </div>
     
             <!-- Fin Subir archivo -->

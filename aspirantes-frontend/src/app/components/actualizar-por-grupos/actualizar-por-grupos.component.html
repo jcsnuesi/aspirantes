@@ -1,0 +1,15 @@
+
+
+
+    <!-- Subir archivo -->
+
+<div class="mt-4 mb-3">
+
+    <h4>Seleccione el archivo con los aspirantes a actualizar</h4>
+    
+    <hr>
+   
+    <input class="form-control" type="file" (change)="onFileChange($event)" accept=".xlsx, .xls, .csv">
+    
+    <button disabled id="fileSub"  (click)="processFile()" class="btn btn-success mt-3 float-end">Procesar Archivo</button>
+</div>

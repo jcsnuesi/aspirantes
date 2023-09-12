@@ -12,7 +12,7 @@ var AspitantesSchema = schema({
     cedula:{type:String, required: true},
     fecha_nacimiento: { type: String, required: true},
     edad:{type:Number, required: true},
-    estatura: { type: String, required: true},
+    estatura: { type: String},
     celular:{type:String},
     peso:{type:String},
     colorpiel:{type:String},

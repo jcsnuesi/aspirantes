@@ -9,12 +9,17 @@
     
         <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
     
-            <a [routerLink]="['/panel/nuevo-grupo']" class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+            <a [routerLink]="['/panel/nuevo-grupo']" class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill"
                 data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
                 aria-selected="true">Crear codigo</a>
 
+            <a [routerLink]="['/panel/ActualizarGrupos']" class="nav-link" id="v-aspirantes-home-tab" data-bs-toggle="pill"  data-bs-target="#v-aspirantes-home" type="button" role="tab" aria-controls="v-pills-home"
+            aria-selected="true">Actualizar aspirantes por grupo</a>
+
             <a [routerLink]="['/explorar-codigos']" class="nav-link" id="v-aspirantes-home-tab" data-bs-toggle="pill"  data-bs-target="#v-aspirantes-home" type="button" role="tab" aria-controls="v-pills-home"
                 aria-selected="true">Explorar codigos</a>
+
+               
 
                 
         </div>

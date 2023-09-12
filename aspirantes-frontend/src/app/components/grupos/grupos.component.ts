@@ -4,14 +4,14 @@ import { Aspirantes } from 'src/app/model/aspirantes';
 import { global } from 'src/app/service/global';
 import * as XLSX from 'xlsx';
 import { parse, addDays } from 'date-fns';
-
+ 
 @Component({
   selector: 'app-grupos',
   templateUrl: './grupos.component.html',
   styleUrls: ['./grupos.component.css'],
   providers: [UserService]
 })
-export class GruposComponent implements OnInit{
+export class GruposComponent implements OnInit {
  public codigox:string;
  public mgs:string;
  public token:string;
@@ -24,8 +24,6 @@ export class GruposComponent implements OnInit{
  public excelData: any[][] = [];
  public excelDateNumber:any;
  public aspirante:any;
-
-
 
   constructor(private _userService:UserService){
     
@@ -110,7 +108,8 @@ export class GruposComponent implements OnInit{
 
 
     this.changer = event.target.id
-    
+
+
     
 
 
@@ -119,6 +118,8 @@ export class GruposComponent implements OnInit{
   onFileChange(event: any): void {
     const file = event.target.files[0];
     const reader = new FileReader();
+    const btnFileSub = document.getElementById('fileSub')
+    btnFileSub.removeAttribute('disabled')
 
     reader.onload = (e: any) => {
       const workbook = XLSX.read(e.target.result, { type: 'binary' });
@@ -180,7 +181,7 @@ export class GruposComponent implements OnInit{
     }
  
     console.log(arrDatos)
-    this._userService.crearAspirante(arrDatos, this.token).subscribe(
+    this._userService.crearAspiranteFile(arrDatos, this.token).subscribe(
       res => {
 
         console.log(res)
@@ -190,9 +191,6 @@ export class GruposComponent implements OnInit{
       }
     )
  
-
-   
-
   }
 
 }

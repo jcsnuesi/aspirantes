@@ -28,7 +28,7 @@ exports.user_status = function (err = null, user) {
 
     if (err != null) {
         return responseObj.error
-    } else if (user == null) {
+    } else if (user == null || user == []) {
 
         return responseObj.user
 

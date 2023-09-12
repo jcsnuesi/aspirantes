@@ -102,15 +102,38 @@ export class UserService{
 
     }
 
+    crearAspiranteFile(aspirante: any, token: string): Observable<any> {
+
+        var nuevo_aspirante = aspirante
+
+        var header = new HttpHeaders().set('Authorization', token)
+
+        return this._http.post(this.url + 'crear-aspiranteFile', nuevo_aspirante , { headers: header })
+
+
+    }
+
     actualizarAspirante(data:any, token:string):Observable<any>{
+
+        var params = JSON.stringify(data)
+
+        var header = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', token)
+       
+        return this._http.put(this.url + 'actualizar-aspirante', params, {headers:header})
+
+    }
+
+    
+    actualizarAspiranteFile(data:any, token:string):Observable<any>{
 
         var params = JSON.stringify(data)
 
         var header = new HttpHeaders().set('Content-Type','application/json').set('Authorization', token)
 
-        return this._http.put(this.url + 'actualizar-aspirante', params, {headers:header})
+        return this._http.put(this.url + 'actualizar-aspiranteFile', params, {headers:header})
 
     }
+
 
     getAspirante(ced:string, token:string):Observable<any>{
 

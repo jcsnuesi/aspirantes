@@ -14,6 +14,7 @@ export class AppComponent implements OnInit, DoCheck {
   public url:string;
   public identity: any;
   public autorizacion:boolean;
+  public imageProfile:string;
 
   constructor(
 
@@ -35,7 +36,7 @@ export class AppComponent implements OnInit, DoCheck {
 
     this.identity = this._userService.getIdentidad()
     this.autorizacion = this.identity.user?.role == 'root' ? true : false
-
+    this.imageProfile = (this.identity.user.avatar).length > 15 ? this.identity.user?.avatar : this.url + this.identity.user?.avatar 
     
 
 

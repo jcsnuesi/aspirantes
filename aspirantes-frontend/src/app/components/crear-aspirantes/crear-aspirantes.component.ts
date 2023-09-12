@@ -26,6 +26,9 @@ export class CrearAspirantesComponent implements OnInit{
   public token:string;
   public archivos:any  = [] ;
   public status:any;
+  public indexFuncion:any;
+  formData: FormData = new FormData();
+
   
   
 
@@ -38,8 +41,14 @@ export class CrearAspirantesComponent implements OnInit{
     this.message = ''
     this.codigoLetra = "F"
     this.titulo = "Crear aspirante"
+    this.formData = new FormData();
+    this.indexFuncion = 0
+
+    
     this.aspirante = new Aspirantes('', '', '', '', '', new Date, 0, '', '', '', '', '', '', '', '', '', '', '',0,0,0,'',0,'',''); 
 
+    this.aspirante.medicos = 'Seleccionar...'
+    this.aspirante.psic = 'Seleccionar...'
     this.token = this._userServices.getToken()
    
     
@@ -59,16 +68,18 @@ export class CrearAspirantesComponent implements OnInit{
           res => {
          
             if (res.status == 'success') {
+              this.indexFuncion = 1
+              this.titulo = 'Actualizar aspirante'
               var calendar = {
                 Jan: '01', Feb: '02', Marc:'03', Apr: '04', May: '05',
                 Jun: '06', Jul: '07', Aug: '08', Sep:'09', Oct: '10', Nov: '11', Dic: '12'
               }
-
+              
               this.foto = res.usuario.avatar
               this.aspirante = res.usuario
               var fechan = res.usuario.fecha_nacimiento
               this.aspirante.fecha_nacimiento = fechan.split("-")[2] + "-" + calendar[fechan.split("-")[0]] + "-" + fechan.split("-")[1]
-             
+              this.formData.append('avatar',res.usuario.avatar)
           
             }
 
@@ -114,7 +125,7 @@ export class CrearAspirantesComponent implements OnInit{
 
     // Calcular la diferencia en años
     var diferenciaEnAnios = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
-    this.aspirante.edad = diferenciaEnAnios
+    this.aspirante.edad = diferenciaEnAnios 
 
     if (
       fechaActual.getMonth() < fechaNacimiento.getMonth() ||
@@ -138,14 +149,14 @@ export class CrearAspirantesComponent implements OnInit{
       
       console.log('Si es una imagen');
       
-
       this.blobFile(imagen).then((res: any) => {
-        this.foto = res.base;
+      this.foto = res.base;
+      
    
 
       })
-
-      this.archivos.push(imagen)
+      this.formData.append('avatar',imagen)
+      
     } else {
       console.log('No es imagen');
 
@@ -183,53 +194,78 @@ export class CrearAspirantesComponent implements OnInit{
 
 
   onSubmit(form: any) {
-    
+   
     try {
-      
-      const formData = new FormData();    
-      
-      for (const key in this.aspirante) {
-        if (key == 'avatar') {
-
-          this.archivos.forEach(file => {
-            formData.append(`${key}`, file)          
-            
-          });
-          
-        }else{
-          formData.append(`${key}`, this.aspirante[key])
-        }
        
-      }
-
-      console.log(this.aspirante)
      
+      for (const key in this.aspirante) {
 
-      this._userServices.crearAspirante(formData, this.token).subscribe(
-        res => { 
-
-          if (res.status == 'success') {
-
-            this.status = 'success';
-            this.foto = '../../../assets/image/noimg.png'
-
-            setTimeout(() => {
-              window.location.reload()
-            }, 3000);
-           
-          }else{
-
-            this.status = 'error'
-
-          }
-          
-        },
-        err => {
-          this.status = 'error'
-          console.log(err)
+        if(key == 'avatar'){
+          continue
+        }else{
+          this.formData.append(`${key}`, this.aspirante[key])
+             
         }
-      )
-
+          
+      }
+     
+    
+      if (this.indexFuncion != 1) {
+        
+        this._userServices.crearAspirante(this.formData, this.token).subscribe(
+          res => { 
+  
+            if (res.status == 'success') {
+  
+              this.status = 'success';
+              this.foto = '../../../assets/image/noimg.png'
+  
+              
+  
+              setTimeout(() => {
+                window.location.reload()
+              }, 3000);
+             
+            }else{
+  
+              this.status = 'error'
+  
+            }
+            
+          },
+          err => {
+            this.status = 'error'
+            console.log(err)
+          }
+        )
+      }else{
+        console.log(form.value)
+        this._userServices.actualizarAspirante( this.aspirante, this.token).subscribe(
+          res => { 
+  
+            if (res.status == 'success') {
+  
+              this.status = 'success';
+              this.foto = '../../../assets/image/noimg.png'
+  
+              setTimeout(() => {
+                window.location.reload()
+              }, 3000);
+             
+            }else{
+  
+              this.status = 'error'
+  
+            }
+            
+          },
+          err => {
+            this.status = 'error'
+            console.log(err)
+          }
+        )
+      }
+    
 
       
     } catch (error) {
@@ -237,8 +273,7 @@ export class CrearAspirantesComponent implements OnInit{
       console.log(error)
       
     }
-        
- 
+      
     
   }
 
@@ -251,8 +286,19 @@ export class CrearAspirantesComponent implements OnInit{
     this.spinner = spinner
   }
 
+  updateAspirante(){
 
-  
+    this._userServices.actualizarAspirante(this.aspirante,this.token).subscribe(
+
+    response => {
+      console.log(response)
+    },
+    error => {
+      console.log(error)
+    }
+    )
+
+  }  
        
   }
 

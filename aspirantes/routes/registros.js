@@ -11,6 +11,7 @@ var uploadDir = multipart({uploadDir:'assets/aspirantes'})
 // RUTAS POST
  
 router.post('/crear-aspirante', [md_auth.autenticacion, uploadDir], RegistrosController.creaRegistro)
+router.post('/crear-aspiranteFile', [md_auth.autenticacion, uploadDir], RegistrosController.crearAspirantesPorDoc)
 
 
 
@@ -19,12 +20,13 @@ router.post('/crear-aspirante', [md_auth.autenticacion, uploadDir], RegistrosCon
 router.get('/aspirantes', md_auth.autenticacion, RegistrosController.aspirantes)
 router.get('/aspirante/:ced', md_auth.autenticacion, RegistrosController.aspirante)
 router.get('/foto/:filename', RegistrosController.avatar);
+
 // RUTAS PUT
 
-router.put('/actualizar-aspirante', md_auth.autenticacion, RegistrosController.actualizarAspirante)
-// router.put('/actualizar-avatar', [md_auth.autenticacion, uploadDir], RegistrosController.subirAvatarAspirante)
+router.put('/actualizar-aspirante',md_auth.autenticacion, RegistrosController.actualizarAspirante)
+router.put('/actualizar-aspiranteFile', md_auth.autenticacion, RegistrosController.actualizarAspiranteFile)
 
-// RUTAS DELETE
+// RUTAS DELETE 
 
 router.delete('/eliminar-aspirante/:id', md_auth.autenticacion, RegistrosController.eliminarAspirante)
 

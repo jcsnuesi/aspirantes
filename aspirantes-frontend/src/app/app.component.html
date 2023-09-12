@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">ACADEMIA DIGITAL</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -32,7 +32,7 @@
         <li class="nav-item dropdown" *ngIf="identity != false">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{identity.user.nombres + " " + identity.user.apellidos}}
-            <img class="avatar" src="{{url + 'avatar/' + identity.user.avatar}}" alt="" srcset="">
+            <img class="avatar" src="{{identity.user.avatar}}" alt="" srcset="">
           </a>
           <ul class="dropdown-menu">
            <li><a class="dropdown-item" href="#">Perfil</a></li>

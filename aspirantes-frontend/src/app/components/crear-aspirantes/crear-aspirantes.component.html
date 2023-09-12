@@ -25,7 +25,7 @@
                 <img src="{{foto}}" class="card-img-top"style="padding: 10px;width: 350px;height: 320px;" alt="...">
             </span>
             
-            <input type="file"  name="avatar"  (change)="onFileSelected($event)"  id="imgAspirantes">
+            <input type="file" name="avatar"  (change)="onFileSelected($event)"  id="imgAspirantes">
        
       
         
@@ -85,7 +85,7 @@
             <div class="hijos">
                 <label for="cedula" class="form-label">Cedula</label>
                 <input type="text" class="form-control" id="cedula" #cedula="ngModel" [(ngModel)]="aspirante.cedula"
-                    name="cedula" aria-describedby="cedula" required/>
+                    name="cedula" aria-describedby="cedula" />
     
                 <span *ngIf="!cedula.valid && cedula.touched" class="invalid-feedback d-block">
                     Los nombres debe ser completado.
@@ -132,7 +132,7 @@
             <div class="hijos">
                 <label for="celular" class="form-label">Celular</label>
                 <input type="text" class="form-control" id="celular" #celular="ngModel" [(ngModel)]="aspirante.celular"
-                    name="celular" aria-describedby="celular" required />
+                    name="celular" aria-describedby="celular"  />
     
                 <span *ngIf="!celular.valid && celular.touched" class="invalid-feedback d-block">
                     Campo requerido.
@@ -142,7 +142,7 @@
             <div class="hijos">
                 <label for="correo" class="form-label">Correo</label>
                 <input type="text" class="form-control" id="correo" #correo="ngModel" [(ngModel)]="aspirante.correo"
-                    name="correo" aria-describedby="edad" required />
+                    name="correo" aria-describedby="edad"  />
             
                 <span *ngIf="!correo.valid && correo.touched" class="invalid-feedback d-block">
                     Campo requerido.
@@ -176,7 +176,7 @@
 
                 <label for="peso" class="form-label">Peso (Libras)</label>
                 <input type="text" class="form-control" id="peso" #peso="ngModel" [(ngModel)]="aspirante.peso" name="peso"
-                    aria-describedby="peso" required />
+                    aria-describedby="peso"  />
                 
                 <span *ngIf="!peso.valid && peso.touched" class="invalid-feedback d-block">
                     Campo requerido.
@@ -310,7 +310,7 @@
             
                 <select name="psic" #psic="ngModel" [(ngModel)]="aspirante.psic" id="psic" class="form-select"
                     required>
-                    <option disabled selected>Seleccionar...</option>
+                    <option disabled selected>{{aspirante.psic}}</option>
                     <option value="apto">Apto</option>
                     <option value="no_apto">No apto</option>
                 </select>
@@ -355,7 +355,7 @@
             
                 <select name="medicos" #medicos="ngModel" [(ngModel)]="aspirante.medicos" id="medicos" class="form-select"
                     required>
-                    <option disabled selected>Seleccionar...</option>
+                    <option disabled selected>{{aspirante.medicos}}</option>
                     <option value="apto">Apto</option>
                     <option value="no_apto">No apto</option>
                 </select>
@@ -412,7 +412,7 @@
         Hubo un error al crear el registro, revise todos los campos e intente nuevamente
     </div>
   
-    <input type="submit"  class="form-control btn btn-success mb-5 mt-5" value="Crear perfil">
+    <input type="submit"  class="form-control btn btn-success mb-5 mt-5" value="{{titulo}}">
 <!-- [disabled]="!aspiranteForm.valid" -->
     </form>
     

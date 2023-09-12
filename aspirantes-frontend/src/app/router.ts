@@ -8,6 +8,7 @@ import { CrearAspirantesComponent } from "./components/crear-aspirantes/crear-as
 import { MainComponent } from "./components/main/main.component";
 import { GruposComponent } from "./components/grupos/grupos.component";
 import { ExplorarCodigosComponent } from "./components/explorar-codigos/explorar-codigos.component";
+import { ActualizarPorGruposComponent } from "./components/actualizar-por-grupos/actualizar-por-grupos.component";
 
 const AppRoutes: Routes = [
 
@@ -18,7 +19,8 @@ const AppRoutes: Routes = [
     { path: 'panel', component: MainComponent, children: [
         { path: 'nuevo-aspirante/:id', component: CrearAspirantesComponent },
         { path: 'modificar-aspirante/:id', component: CrearAspirantesComponent },
-        { path: 'nuevo-grupo', component: GruposComponent }
+        { path: 'nuevo-grupo', component: GruposComponent },
+        { path: 'ActualizarGrupos', component: ActualizarPorGruposComponent }
     ]},
     { path: 'explorar-codigos', component: ExplorarCodigosComponent },
    

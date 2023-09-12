@@ -12,86 +12,105 @@ const { group } = require('console')
 
 var RegistrosController = {
 
-    crearAspirantesPorDoc:async function(aspirantesArray, indice) {
+    crearAspirantesPorDoc:async function(req,res) {
+
+        var params = req.body
 
 
-
-        let arrayAspitantes = aspirantesArray
+        // let arrayAspitantes = aspirantesArray
         var duplicados = []
+        var nuevos_aspirantes = []
        
         
-        if ((indice+1) == arrayAspitantes.length) {
+       
 
-            return { status: 'success', message: 'Completado', duplicado: duplicados }
-        }
+        try {
 
-
-        var aspirante = new Aspirantes()
-        var grupo = new Grupos()
-
-      
-        for (const key in arrayAspitantes[indice]) {
-
+            for (let index = 0; index < params.length; index++) {
+                var aspirante = new Aspirantes()
+                var grupo = new Grupos()
+       
+                for (const key in params[index]) {
         
-            if (key == 'codigo') {
-
-                aspirante['sexo'] =  (aspirantesArray[indice]['codigo'].startsWith('F')) ? 'Femenino' : 'Masculino'
-                aspirante[key] = aspirantesArray[indice][key]
+                
+                    if (key == 'codigo') {
+        
+                        aspirante['sexo'] =  (params[index][key].startsWith('F')) ? 'Femenino' : 'Masculino'
+                        aspirante[key] = params[index][key]
+                    }
+                    
+                    aspirante[key] = params[index][key]
+                    
+                    
+                }
+        
+                const codigoEncontrado = await Grupos.findOne({ codigo: (aspirante.codigo).substring(0,2)})
+                const aspiranteEncontrado = await Aspirantes.findOne({ codigo: aspirante.codigo})
+                      
+            
+                // console.log(aspiranteEncontrado)
+        
+                if (codigoEncontrado == null) {
+                    
+                    grupo.codigo = (aspirante.codigo).substring(0, 2)
+                    grupo.aspirantesId.push(aspirante._id)
+                    await grupo.save();
+                }else{
+                    codigoEncontrado.aspirantesId.push(aspirante._id)
+                    await Grupos.findOneAndUpdate({ codigo: (aspirante.codigo).substring(0, 2) }, codigoEncontrado,{new:true})
+                 
+                }
+                
+        
+                if (aspiranteEncontrado != null) {            
+                    
+                   duplicados.push(aspirante.codigo)
+                 
+        
+                } else {
+                          
+                 
+                    await aspirante.save();
+                   nuevos_aspirantes.push(aspirante)
+        
+                }
+                
             }
+
+            return res.status(200).send({
+
+                status: 'success',
+                message: 'Aspirantes creados exitosamente.',
+                aspirantes_nuevos:nuevos_aspirantes
+            })
             
-            aspirante[key] = aspirantesArray[indice][key]
+        } catch (error) {
 
+            return res.status(500).send({
+
+                status: 'error',
+                message: 'Error al guardar aspirantes.',
+                duplicados: duplicados
+            })
+            
         }
-
-        const codigoEncontrado = await Grupos.findOne({ codigo: (aspirante.codigo).substring(0,2)})
-        const aspiranteEncontrado = await Aspirantes.findOne({ codigo: aspirante.codigo})
-              
     
-        // console.log(aspiranteEncontrado)
-
-        if (codigoEncontrado == null) {
-            
-            grupo.codigo = (aspirante.codigo).substring(0, 2)
-            grupo.aspirantesId.push(aspirante._id)
-            await grupo.save();
-        }else{
-            codigoEncontrado.aspirantesId.push(aspirante._id)
-            await Grupos.findOneAndUpdate({ codigo: (aspirante.codigo).substring(0, 2) }, codigoEncontrado,{new:true})
-         
-        }
         
-
-        if (aspiranteEncontrado != null) {            
-            
-           duplicados.push(aspirante.codigo)
-         
-
-        } else {
-                  
-         
-            await aspirante.save();
-        }
-        
-        RegistrosController.crearAspirantesPorDoc(arrayAspitantes, indice+1)
+       
       
     },
     creaRegistro:async function (req, res) {
 
         
         var params = req.body      
-        var condicion = []
-      
-        
-       
-        if (params.length > 1) {
-          const respuesta = await RegistrosController.crearAspirantesPorDoc(params, 0)
-            console.log(respuesta)
-            return res.status(200).send(respuesta) 
+        var condicion = []      
+    
+        var avatarPath = (req?.files?.avatar?.path != undefined) ? req.files?.avatar?.path : params?.avatar
+        if(req.files?.avatar?.path != undefined || req.files?.avatar?.path != null){
+
+            var namesplit = avatarPath.split(/[\\.]+/g)
+            var file_name = namesplit[2] + '.' + namesplit[3].toLowerCase()
         }
-        
-        var avatarPath = req.files.avatar.path
-        var namesplit = avatarPath.split(/[\\.]+/g)
-        var file_name = namesplit[2] + '.' + namesplit[3].toLowerCase()
 
         try {
 
@@ -276,41 +295,38 @@ var RegistrosController = {
 
         var params = req.body;
         var condicion = []
-       
-        
+      
         try {
 
             for (const key in params) {
 
-                if (key.includes("correo")) {
-                    condicion.push(validator.isEmail(params[key]))
-
-                } else {
+     
 
                     condicion.push(!validator.isEmpty(params[key]))
-                }
+                
+
+                 
             }
 
-            if (condicion.includes(false)) {
-
-                throw new Error("Error grave")
-
-            }
-
+        
 
         } catch (error) {
+            console.log(error)
             return res.status(400).send({
 
                 status: 'error',
-                message: 'Debe completar los campos correctamente.'
+                message: 'Debe completar los campos correctamente.',
+                errors:error
             })
 
         }
-
+    
+   
         if (!condicion.includes(false)) {
 
-            Aspirantes.findOne({ _id: params.id }, async  (err, userFound) => {
-
+           
+            Aspirantes.findOne({ cedula: params.cedula }, async  (err, userFound) => {
+                
                 if (err || userFound == null || (userFound).length <= 0) {
 
                     var info = _errors.user_status(err, userFound)
@@ -327,17 +343,13 @@ var RegistrosController = {
 
                     const grupoAspirante = await Grupos.findOne({ aspirantesId: userFound._id })
 
-                    console.log((grupoAspirante.aspirantesId).shift())
+                    (grupoAspirante.aspirantesId).shift()
                     await Grupos.findOneAndUpdate({ codigo: (userFound.codigo).substring(0, 2) }, grupoAspirante,{new:true} )
                     
                 }
 
-               
-                
-               
-
-                Aspirantes.findOneAndUpdate({ _id: params.id }, params, { new: true }, (err, updated) => {
-
+                Aspirantes.findOneAndUpdate({ codigo: params.codigo }, params, { new: true }, (err, updated) => {
+                  
                     if (err) {
 
                         var info = _errors.user_status(err, 'n/a')
@@ -379,6 +391,61 @@ var RegistrosController = {
 
 
         }
+    },
+    actualizarAspiranteFile: async function (req, res) {
+
+        var params = req.body;
+
+       
+        try {
+
+           
+            var aspirante_actualizado = []
+            for (let index = 0; index < params.length; index++) {
+                
+                
+             const AspiranteFound = await Aspirantes.findOne({ codigo: params[index].codigo })
+
+                if (params[index].estatus == 'inactivo') {
+    
+                    const grupoAspirante = await Grupos.findOne({ aspirantesId: userFound._id })
+
+                    console.log((grupoAspirante.aspirantesId).shift())
+                    await Grupos.findOneAndUpdate({ codigo: (userFound.codigo).substring(0, 2) }, grupoAspirante,{new:true} )
+                    
+                }      
+                
+               
+             
+             var aspirante_updated =  await Aspirantes.findOneAndUpdate({ codigo: params[index].codigo }, params[index], { new: true })
+
+
+             aspirante_actualizado.push(aspirante_updated)
+
+                
+            }
+
+        
+
+        } catch (error) {
+            return res.status(400).send({
+
+                status: 'error',
+                message: 'Hubo un error al actualizar, verifique los campos.'
+            })
+
+        }
+
+        
+        return res.status(200).send({
+
+            status: 'success',
+            message: 'Aspirantes actualizados exitosamente.',
+            aspirante_updated:aspirante_actualizado
+        })
+
+
+       
     },
 
     eliminarAspirante: function (req, res) {
